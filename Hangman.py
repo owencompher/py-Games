@@ -1,6 +1,5 @@
 from random import randint
 from things import *
-import logic
 with open("hangmanwordlist.txt") as f:
     words = f.readlines()
 
