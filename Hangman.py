@@ -1,5 +1,17 @@
 from random import randint
-from things import *
+
+
+def char_occurrences(string: str, char: str):
+    """Return a list of the indexes of every occurrence of a character
+     in a string
+     """
+    occurrences = []
+    for i in range(len(string)):
+        if string[i] == char:
+            occurrences.append(i)
+    return occurrences
+
+
 with open("hangmanwordlist.txt") as f:
     words = f.readlines()
 
@@ -7,15 +19,17 @@ alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
             'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
             's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
+
 class Game:
     """Represents a game of hangman"""
+
     def __init__(self):
         """Create a game of hangman.
         Generates a random word from hangmanwordlist.txt,
         and initializes the game board."""
         with open("hangmanwordlist.txt") as f:
             words = f.readlines()
-        self.word = words[randint(1,len(words))][:-1]
+        self.word = words[randint(1, len(words))][:-1]
         self.num_round = 0
         self.word_guessed = False
         self.letters = [' ' for letter in self.word]
@@ -37,7 +51,7 @@ class Game:
                 print("Word was " + self.word.upper())
                 break
             if self.word_guessed:
-                print("YOU WIN! \n"
+                print("You win! \n"
                       + "Guessed " + self.word.upper() + " with "
                       + str(self.wrongs) + " incorrect guesses.")
                 if self.wrongs >= 7:
@@ -45,7 +59,6 @@ class Game:
                           + "the man was hung.")
                 break
             self.round()
-
 
     def round(self):
         """Main game loop. Prints the board, gets a guess as input,
@@ -66,7 +79,7 @@ class Game:
                     self.num_round += 1
                     self.update_victim()
 
-            elif guess.islower() and len(guess) ==1:
+            elif guess.islower() and len(guess) == 1:
                 # user is guessing a letter
                 if occurs := char_occurrences(self.word, guess):
                     for i in range(len(occurs)):
@@ -117,7 +130,3 @@ class Game:
               + "  " + "   ".join(self.letters) + " \n"
               + " " + " ".join(["___" for i in self.letters]) + "\n"
               )
-
-def __main__():
-    while True:
-        Game().play()
